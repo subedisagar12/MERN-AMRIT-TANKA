@@ -27,7 +27,10 @@ BookRouter.post("/create", (req, res) => {
 BookRouter.get("/", async (req, res) => {
   // async-await method
   try {
-    let allBooks = await BookModel.find();
+    // lt,lte,gt,gte,eq,ne
+    let allBooks = await BookModel.find({
+      price: { $ne: 100 },
+    });
 
     return res.json({
       message: "All Books fetched",
