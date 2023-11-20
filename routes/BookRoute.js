@@ -28,9 +28,10 @@ BookRouter.get("/", async (req, res) => {
   // async-await method
   try {
     // lt,lte,gt,gte,eq,ne
-    let allBooks = await BookModel.find({
-      price: { $ne: 100 },
-    });
+    // let allBooks = await BookModel.find({ price: { $ne: 100 } });
+
+    // Logical Operators ($or, $and, $nor,$not)
+    let allBooks = await BookModel.find({ price: { $not: { $gt: 100 } } });
 
     return res.json({
       message: "All Books fetched",
