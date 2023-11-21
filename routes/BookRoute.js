@@ -27,16 +27,34 @@ BookRouter.post("/create", (req, res) => {
 BookRouter.get("/", async (req, res) => {
   // async-await method
   try {
-    // lt,lte,gt,gte,eq,ne
-    // let allBooks = await BookModel.find({ price: { $ne: 100 } });
+    if (req.query.author && req.query.price) {
+      // DB query when both author and price come
+      let filteredBooks = await BookModel.find({
+        author: req.query.author,
+        price: req.query.price,
+      });
+      return res.json({ data: filteredBooks });
+    }
 
-    // Logical Operators ($or, $and, $nor,$not)
-    let allBooks = await BookModel.find({ price: { $not: { $gt: 100 } } });
+    if (req.query.author) {
+      // Db query if author only comes
+      let filteredBooks = await BookModel.find({
+        author: req.query.author,
+      });
+      return res.json({ data: filteredBooks });
+    }
 
-    return res.json({
-      message: "All Books fetched",
-      data: allBooks,
-    });
+    if (req.query.price) {
+      // Db query if price only comes
+      let filteredBooks = await BookModel.find({
+        price: req.query.price,
+      });
+      return res.json({ data: filteredBooks });
+    }
+
+    // Db query is no query comes
+    let allBooks = await BookModel.find();
+    return res.json({ data: allBooks });
   } catch (e) {
     return res.status(500).json({
       message: e.message,
