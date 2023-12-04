@@ -1,5 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const UserModel = require("../models/UserModel");
 
@@ -62,7 +63,18 @@ AuthRouter.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Incorrect password" });
     }
 
-    return res.json({ message: "Logged In Successfully", data: user });
+    let token = jwt.sign(
+      {
+        userId: user._id,
+      },
+      process.env.SECRET_KEY
+    );
+
+    return res.json({
+      message: "Logged In Successfully",
+      data: user,
+      access_token: token,
+    });
   } catch (e) {
     return res.status(500).json({ message: e.message });
   }

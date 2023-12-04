@@ -22,6 +22,10 @@ const bookSchema = mongoose.Schema({
     max: 1000,
     // required: true,
   },
+
+  userId: {
+    type: String,
+  },
   // is_available: Boolean,
   // address: addressSchema,
 });

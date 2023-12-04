@@ -1,13 +1,13 @@
+const jwt = require("jsonwebtoken");
 const BookModel = require("../models/BookModel");
 
 function createBook(req, res) {
-  // console.log(req.body);
-
   // Logic to create book on database
   BookModel.create({
     title: req.body.title,
     author: req.body.author,
     price: req.body.price,
+    userId: req.user.userId,
     // address: req.body.address,
   })
     .then(() => {
@@ -39,35 +39,6 @@ async function getAllBooks(req, res) {
     let books = await BookModel.find(filterQuery);
 
     return res.json({ data: books });
-
-    // if (req.query.author && req.query.price) {
-    //   // DB query when both author and price come
-    //   let filteredBooks = await BookModel.find({
-    //     author: req.query.author,
-    //     price: req.query.price,
-    //   });
-    //   return res.json({ data: filteredBooks });
-    // }
-
-    // if (req.query.author) {
-    //   // Db query if author only comes
-    //   let filteredBooks = await BookModel.find({
-    //     author: req.query.author,
-    //   });
-    //   return res.json({ data: filteredBooks });
-    // }
-
-    // if (req.query.price) {
-    //   // Db query if price only comes
-    //   let filteredBooks = await BookModel.find({
-    //     price: req.query.price,
-    //   });
-    //   return res.json({ data: filteredBooks });
-    // }
-
-    // // Db query is no query comes
-    // let allBooks = await BookModel.find();
-    // return res.json({ data: allBooks });
   } catch (e) {
     return res.status(500).json({
       message: e.message,

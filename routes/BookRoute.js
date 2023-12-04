@@ -3,6 +3,8 @@ const BookModel = require("../models/BookModel");
 
 const BookRouter = express.Router();
 
+const authMiddleware = require("../middlewares/Auth");
+
 // Controller Import
 const {
   createBook,
@@ -10,7 +12,7 @@ const {
   getSingleBook,
 } = require("../controllers/BookController");
 
-BookRouter.post("/create", createBook);
+BookRouter.post("/create", authMiddleware, createBook);
 
 // Get All books
 BookRouter.get("/", getAllBooks);
